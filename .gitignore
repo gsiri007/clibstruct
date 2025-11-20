@@ -2,3 +2,5 @@
 **/test
 **/test.c
 build/
+html/
+latex/

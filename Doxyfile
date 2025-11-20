@@ -1,5 +1,5 @@
 PROJECT_NAME           = "clibstruct"
-INPUT                  = . docs
+INPUT                  = .
 RECURSIVE               = YES
 EXTRACT_ALL            = YES
 OPTIMIZE_OUTPUT_FOR_C  = YES
