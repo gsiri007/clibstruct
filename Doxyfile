@@ -1,0 +1,7 @@
+PROJECT_NAME           = "clibstruct"
+INPUT                  = . docs
+RECURSIVE               = YES
+EXTRACT_ALL            = YES
+OPTIMIZE_OUTPUT_FOR_C  = YES
+EXCLUDE_PATTERNS       = *.md
+USE_MDFILE_AS_MAINPAGE = docs/mainpage.dox

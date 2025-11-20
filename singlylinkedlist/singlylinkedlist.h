@@ -1,3 +1,7 @@
+/**
+ * @file singlylinkedlist.h
+ * @brief A library for creating and manipulating singly linked lists.
+ */
 #ifndef SINGLYLINKEDLIST_H
 #define SINGLYLINKEDLIST_H
 
@@ -5,6 +9,7 @@
 
 /**
  * @brief A node in a singly linked list.
+ * @ingroup SinglyLinkedList
  */
 typedef struct Node {
     int data; /**< The data for the node. */
@@ -16,6 +21,7 @@ typedef struct Node {
  * @brief Creates a new linked list.
  * @param data The data for the first node.
  * @return A pointer to the head of the new linked list, or NULL on failure.
+ * @ingroup SinglyLinkedList
  */
 node_t *createLinkedList(int data);
 
@@ -24,6 +30,7 @@ node_t *createLinkedList(int data);
  * @param data The data for the new node.
  * @param headPtr A pointer to the head of the linked list.
  * @return 0 on success, -1 on failure.
+ * @ingroup SinglyLinkedList
  */
 int addEndNode(int data, node_t **headPtr);
 
@@ -32,6 +39,7 @@ int addEndNode(int data, node_t **headPtr);
  * @param data The data for the new node.
  * @param headPtr A pointer to the head of the linked list.
  * @return 0 on success, -1 on failure.
+ * @ingroup SinglyLinkedList
  */
 int addBeginNode(int data, node_t **headPtr);
 
@@ -41,6 +49,7 @@ int addBeginNode(int data, node_t **headPtr);
  * @param data The data for the new node.
  * @param headPtr A pointer to the head of the linked list.
  * @return 0 on success, -1 on failure.
+ * @ingroup SinglyLinkedList
  */
 int insertNode(int pos, int data, node_t **headPtr);
 
@@ -48,6 +57,7 @@ int insertNode(int pos, int data, node_t **headPtr);
  * @brief Deletes the last node of the linked list.
  * @param headPtr A pointer to the head of the linked list.
  * @return 0 on success, -1 on failure.
+ * @ingroup SinglyLinkedList
  */
 int deleteEndNode(node_t **headPtr);
 
@@ -55,6 +65,7 @@ int deleteEndNode(node_t **headPtr);
  * @brief Deletes the first node of the linked list.
  * @param headPtr A pointer to the head of the linked list.
  * @return 0 on success, -1 on failure.
+ * @ingroup SinglyLinkedList
  */
 int deleteBeginNode(node_t **headPtr);
 
@@ -63,6 +74,7 @@ int deleteBeginNode(node_t **headPtr);
  * @param headPtr A pointer to the head of the linked list.
  * @param pos The 0-based position of the node to delete.
  * @return 0 on success, -1 on failure.
+ * @ingroup SinglyLinkedList
  */
 int deleteNode(node_t **headPtr, int pos);
 
@@ -70,15 +82,23 @@ int deleteNode(node_t **headPtr, int pos);
  * @brief Deletes the entire linked list.
  * @param headPtr A pointer to the head of the linked list.
  * @return 0 on success, -1 on failure.
+ * @ingroup SinglyLinkedList
  */
 int deleteLinkedList(node_t **headPtr);
 
+/**
+ * @brief Reverses a linked list in place.
+ * @param headPtr A pointer to the head of the linked list.
+ * @return 0 on success, -1 on failure.
+ * @ingroup SinglyLinkedList
+ */
 int reverseLinkedList(node_t **headPtr);
 
 /**
  * @brief Gets the size of the linked list.
  * @param headPtr A pointer to the head of the linked list.
  * @return The number of nodes in the linked list.
+ * @ingroup SinglyLinkedList
  */
 int sizeLinkedList(node_t *headPtr);
 
@@ -86,18 +106,21 @@ int sizeLinkedList(node_t *headPtr);
  * @brief Gets the number of bytes occupied by the linked list.
  * @param headPtr A pointer to the head of the linked list.
  * @return The number of bytes occupied by the linked list.
+ * @ingroup SinglyLinkedList
  */
 int bytesLinkedList(node_t *headPtr);
 
 /**
  * @brief Prints a single node.
  * @param node A pointer to the node to print.
+ * @ingroup SinglyLinkedList
  */
 void printNode(node_t *node);
 
 /**
  * @brief Prints the entire linked list.
  * @param head A pointer to the head of the linked list.
+ * @ingroup SinglyLinkedList
  */
 void printLinkedList(node_t *head);
 

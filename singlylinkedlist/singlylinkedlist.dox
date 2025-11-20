@@ -1,0 +1,4 @@
+/**
+ * @defgroup SinglyLinkedList Singly Linked List
+ * @brief A library for creating and manipulating singly linked lists.
+ */
