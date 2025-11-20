@@ -13,24 +13,28 @@ node_t *createLinkedList(int data) {
     return headPtr;
 }
 
-int addEndNode(int data, node_t *headPtr) {
+int addEndNode(int data, node_t **headPtr) {
     node_t *newNode = (node_t *) malloc(sizeof(node_t));
+
     if (newNode == NULL) {
         return -1;
     }
 
-    node_t *ptr = headPtr;
-    while (true) {
-        if (ptr->next == NULL) {
-            ptr->next  = newNode;
-            newNode->data = data;
-            newNode->next = NULL;
-            return 0;
-        }
+    newNode->data = data;
+    newNode->next = NULL;
 
+    if (*headPtr == NULL) {
+        *headPtr = newNode;
+        return 0;
+    }
+
+    node_t *ptr = *headPtr;
+    while (ptr->next != NULL) {
         ptr = ptr->next;
     }
 
+    ptr->next = newNode;
+    return 0;
 }
 
 int addBeginNode(int data, node_t **headPtr) {
@@ -48,32 +52,47 @@ int addBeginNode(int data, node_t **headPtr) {
 }
 
 int insertNode(int pos, int data, node_t **headPtr) {
-    int size = sizeLinkedList(*headPtr);
-
     // out of bound check
-    if (pos >= size || pos < 0) {
+    if (pos < 0) {
         return -1;
     }
 
-    // insert at begining
+    // insert at begining and to an empty list
     if (pos == 0) { 
         return addBeginNode(data, headPtr);
     }
 
-    // insert at end
-    if (pos == size - 1) {
-        return addEndNode(data, *headPtr);
+    // for an empty list can't insert to a pos > 0
+    if (pos > 0 && *headPtr == NULL) {
+        return -1;
+    }
+
+    int size = sizeLinkedList(*headPtr);
+
+    // out of bound check
+    if (pos > size) {
+        return -1;
     }
 
     // insert at given position
     int count = 0;
     node_t *ptr = *headPtr;
-    //TODO:
-    while (count == pos) {
+    node_t *prevNode = NULL;
+    while (count != pos) {
+        prevNode = ptr;
         ptr = ptr->next;
         count++;
     }
 
+    node_t *newNode = (node_t *) malloc(sizeof(node_t));
+    if (newNode == NULL) {
+        return -1;
+    }
+
+    prevNode->next = newNode;
+    newNode->next  = ptr;
+    newNode->data  = data;
+    return 0;
 }
 
 int deleteEndNode(node_t **headPtr) {
@@ -92,17 +111,14 @@ int deleteEndNode(node_t **headPtr) {
     node_t *ptr = *headPtr;
     node_t *prevNode = ptr;
 
-    while (true) {
-        if (ptr->next == NULL) {
-            prevNode->next = NULL;
-            free(ptr);
-            return 0;
-        }
-
+    while (ptr->next != NULL) {
         prevNode = ptr;
         ptr = ptr->next;
     }
 
+    prevNode->next = NULL;
+    free(ptr);
+    return 0;
 }
 
 int deleteBeginNode(node_t **headPtr) {
@@ -117,6 +133,10 @@ int deleteBeginNode(node_t **headPtr) {
     return 0;
 }
 
+int deleteNode(node_t **headPtr, int pos) {
+    //TODO:
+}
+
 int deleteLinkedList(node_t **headPtr) {
     // empty check
     if (*headPtr == NULL) {
@@ -124,17 +144,15 @@ int deleteLinkedList(node_t **headPtr) {
     }
 
     node_t *ptr = *headPtr;
-    while (true) {
-        if (ptr->next == NULL) {
-            free(ptr);
-            *headPtr = NULL;
-            return 0;
-        }
-
-        node_t *temp = ptr;
+    while (ptr->next != NULL) {
+        node_t *tmp = ptr;
         ptr = ptr->next;
-        free(temp);
+        free(tmp);
     }
+
+    free(ptr);
+    *headPtr = NULL;
+    return 0;
 
 }
 
@@ -148,18 +166,16 @@ int reverseLinkedList(node_t **headPtr) {
     node_t *prevNode = NULL;
     node_t *nextNode = ptr->next;
 
-    while (true) {
-        if (nextNode == NULL) {
-            ptr->next = prevNode;
-            *headPtr = ptr;
-            return 0;
-        }
-
+    while (nextNode != NULL) {
         ptr->next = prevNode;
         prevNode = ptr;
         ptr = nextNode;
         nextNode = ptr->next;
     }
+
+    ptr->next = prevNode;
+    *headPtr = ptr;
+    return 0;
 
 }
 
@@ -170,16 +186,14 @@ int sizeLinkedList(node_t *headPtr) {
     }
 
     int count = 0;
-
     node_t *ptr = headPtr;
 
-    while (true) {
+    while (ptr != NULL) {
         count++;
-        if (ptr->next == NULL) {
-            return count;
-        }
         ptr = ptr->next;
     }
+
+    return count;
 }
 
 int bytesLinkedList(node_t *headPtr) { 
@@ -205,13 +219,10 @@ void printLinkedList(node_t *headPtr) {
         return;
     }
 
-    while (true) {
-        printNode(headPtr);
+    node_t *ptr = headPtr;
 
-        if (headPtr->next == NULL) {
-            break;
-        }
-
-        headPtr = headPtr->next;
+    while (ptr != NULL) {
+        printNode(ptr);
+        ptr = ptr->next;
     }
 }

@@ -25,7 +25,7 @@ node_t *createLinkedList(int data);
  * @param headPtr A pointer to the head of the linked list.
  * @return 0 on success, -1 on failure.
  */
-int addEndNode(int data, node_t *headPtr);
+int addEndNode(int data, node_t **headPtr);
 
 /**
  * @brief Adds a new node to the beginning of the linked list.
@@ -57,6 +57,14 @@ int deleteEndNode(node_t **headPtr);
  * @return 0 on success, -1 on failure.
  */
 int deleteBeginNode(node_t **headPtr);
+
+/**
+ * @brief Deletes a node at a specific position in the linked list.
+ * @param headPtr A pointer to the head of the linked list.
+ * @param pos The 0-based position of the node to delete.
+ * @return 0 on success, -1 on failure.
+ */
+int deleteNode(node_t **headPtr, int pos);
 
 /**
  * @brief Deletes the entire linked list.
