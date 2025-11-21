@@ -71,12 +71,12 @@ int deleteBeginNode(node_t **headPtr);
 
 /**
  * @brief Deletes a node at a specific position in the linked list.
- * @param headPtr A pointer to the head of the linked list.
  * @param pos The 0-based position of the node to delete.
+ * @param headPtr A pointer to the head of the linked list.
  * @return 0 on success, -1 on failure.
  * @ingroup SinglyLinkedList
  */
-int deleteNode(node_t **headPtr, int pos);
+int deleteNode(int pos, node_t **headPtr);
 
 /**
  * @brief Deletes the entire linked list.

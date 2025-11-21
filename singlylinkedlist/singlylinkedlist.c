@@ -52,7 +52,7 @@ int addBeginNode(int data, node_t **headPtr) {
 }
 
 int insertNode(int pos, int data, node_t **headPtr) {
-    // out of bound check
+    // lower bound check
     if (pos < 0) {
         return -1;
     }
@@ -69,7 +69,7 @@ int insertNode(int pos, int data, node_t **headPtr) {
 
     int size = sizeLinkedList(*headPtr);
 
-    // out of bound check
+    // upper bound check
     if (pos > size) {
         return -1;
     }
@@ -133,8 +133,43 @@ int deleteBeginNode(node_t **headPtr) {
     return 0;
 }
 
-int deleteNode(node_t **headPtr, int pos) {
-    //TODO:
+int deleteNode(int pos, node_t **headPtr) {
+    // empty check
+    if (*headPtr == NULL) {
+        return -1;
+    }
+
+    // lower bound check
+    if (pos < 0) {
+        return -1;
+    }
+
+    int size = sizeLinkedList(*headPtr);
+
+    // upper bound check
+    if (pos >= size) {
+        return -1;
+    }
+
+    if (pos == 0) {
+        return deleteBeginNode(headPtr);
+    }
+
+    int count = 0;
+    node_t *ptr = *headPtr;
+    node_t *prevPtr = ptr;
+    while (count != pos) {
+        count++;
+        prevPtr = ptr;
+        ptr = ptr->next;
+    }
+
+    node_t *tmp = ptr;
+    ptr = ptr->next;
+    prevPtr->next = ptr;
+    free(tmp);
+
+    return 0;
 }
 
 int deleteLinkedList(node_t **headPtr) {

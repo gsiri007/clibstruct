@@ -167,7 +167,7 @@ void test_deleteEndNode_multiple_nodes_after_deletion() {
 void test_deleteNode_empty_list() {
     printf("  - Testing deleteNode (empty list)...");
     node_t *head = NULL;
-    int result = deleteNode(&head, 0); // Try to delete from pos 0
+    int result = deleteNode(0, &head); // Try to delete from pos 0
     assert(result == -1); // Should fail
     assert(head == NULL);
     printf(" PASSED\n");
@@ -179,7 +179,7 @@ void test_deleteNode_single_node() {
     addEndNode(10, &head);
     assert(sizeLinkedList(head) == 1);
 
-    int result = deleteNode(&head, 0); // Delete the only node
+    int result = deleteNode(0, &head); // Delete the only node
     assert(result == 0);
     assert(head == NULL);
     assert(sizeLinkedList(head) == 0);
@@ -194,7 +194,7 @@ void test_deleteNode_first_node() {
     addEndNode(30, &head);
     assert(sizeLinkedList(head) == 3);
 
-    int result = deleteNode(&head, 0); // Delete 10
+    int result = deleteNode(0, &head); // Delete 10
     assert(result == 0);
     assert(sizeLinkedList(head) == 2);
     assert(head->data == 20);
@@ -214,7 +214,7 @@ void test_deleteNode_middle_node() {
     addEndNode(40, &head);
     assert(sizeLinkedList(head) == 4);
 
-    int result = deleteNode(&head, 2); // Delete 30
+    int result = deleteNode(2, &head); // Delete 30
     assert(result == 0);
     assert(sizeLinkedList(head) == 3);
     assert(head->data == 10);
@@ -234,7 +234,7 @@ void test_deleteNode_last_node() {
     addEndNode(30, &head);
     assert(sizeLinkedList(head) == 3);
 
-    int result = deleteNode(&head, 2); // Delete 30
+    int result = deleteNode(2, &head); // Delete 30
     assert(result == 0);
     assert(sizeLinkedList(head) == 2);
     assert(head->data == 10);
@@ -252,13 +252,13 @@ void test_deleteNode_out_of_bounds() {
     addEndNode(20, &head);
     assert(sizeLinkedList(head) == 2);
 
-    int result = deleteNode(&head, 2); // Position 2 is out of bounds (size is 2)
+    int result = deleteNode(2, &head); // Position 2 is out of bounds (size is 2)
     assert(result == -1); // Should fail
     assert(sizeLinkedList(head) == 2); // List should be unchanged
     assert(head->data == 10);
     assert(head->next->data == 20);
 
-    result = deleteNode(&head, -1); // Negative position
+    result = deleteNode(-1, &head); // Negative position
     assert(result == -1); // Should fail
     assert(sizeLinkedList(head) == 2); // List should be unchanged
 
