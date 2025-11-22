@@ -1,5 +1,5 @@
 **/*.md
-**/try
+**/try.c
 **/a.out
 build/
 html/
