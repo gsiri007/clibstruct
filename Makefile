@@ -1,4 +1,4 @@
-# Makefile for Singly Linked List
+# Makefile for clibstruct
 
 # Compiler
 CC = gcc
@@ -6,55 +6,68 @@ CC = gcc
 # Compiler flags
 # -g: Add debug info
 # -Wall: Enable all warnings
-CFLAGS = -g -Wall
+# -I: Add include directories
+CFLAGS = -g -Wall -Isinglylinkedlist -Istack
 
 # Directories
-SRC_DIR = singlylinkedlist
+SLL_DIR = singlylinkedlist
+STACK_DIR = stack
 TEST_DIR = tests
 BUILD_DIR = build
 
-# Source files
-LIB_SRCS = $(SRC_DIR)/singlylinkedlist.c
-LIB_OBJS = $(BUILD_DIR)/singlylinkedlist.o
+# Library source files
+LIB_SRCS = $(SLL_DIR)/singlylinkedlist.c $(STACK_DIR)/stack.c
+LIB_OBJS = $(patsubst %.c, $(BUILD_DIR)/%.o, $(notdir $(LIB_SRCS)))
 
 # Library target
-LIB_TARGET = $(BUILD_DIR)/libsinglylinkedlist.a
+LIB_TARGET = $(BUILD_DIR)/libclibstruct.a
 
-# Test files
-TEST_SRCS = $(TEST_DIR)/test_runner.c $(TEST_DIR)/test_creation.c $(TEST_DIR)/test_deletion.c $(TEST_DIR)/test_insertion.c $(TEST_DIR)/test_data_types.c
+# Test source files
+TEST_SRCS = $(TEST_DIR)/test_runner.c $(TEST_DIR)/test_creation.c $(TEST_DIR)/test_deletion.c $(TEST_DIR)/test_insertion.c $(TEST_DIR)/test_data_types.c $(TEST_DIR)/test_stack.c
 TEST_OBJS = $(patsubst $(TEST_DIR)/%.c, $(BUILD_DIR)/%.o, $(TEST_SRCS))
 
 # Phony targets
-.PHONY: all test clean test_objs
+.PHONY: all test clean
 
 # Default target
 all: $(LIB_TARGET)
 
-# Rule to build the library object file
-$(LIB_OBJS): $(LIB_SRCS)
-	@mkdir -p $(BUILD_DIR)
-	$(CC) $(CFLAGS) -I$(SRC_DIR) -c $(LIB_SRCS) -o $(LIB_OBJS)
+# Create build directory
+$(BUILD_DIR):
+	mkdir -p $(BUILD_DIR)
+
+# Rule to build library object files
+$(BUILD_DIR)/singlylinkedlist.o: $(SLL_DIR)/singlylinkedlist.c | $(BUILD_DIR)
+	$(CC) $(CFLAGS) -c $< -o $@
+
+$(BUILD_DIR)/stack.o: $(STACK_DIR)/stack.c | $(BUILD_DIR)
+	$(CC) $(CFLAGS) -c $< -o $@
 
 # Rule to create the static library
 $(LIB_TARGET): $(LIB_OBJS)
 	ar rcs $@ $^
 
-# Object file build for test sources
-$(BUILD_DIR)/%.o: $(TEST_DIR)/%.c
-	@mkdir -p $(BUILD_DIR)
-	$(CC) $(CFLAGS) -I$(SRC_DIR) -c $< -o $@
+# Rule to build test object files
+$(BUILD_DIR)/%.o: $(TEST_DIR)/%.c | $(BUILD_DIR)
+	$(CC) $(CFLAGS) -I. -c $< -o $@
 
-# Test runner build
+# Test runner build and execution
 test: $(LIB_TARGET) $(TEST_OBJS)
-	@mkdir -p $(BUILD_DIR)
-	$(CC) $(CFLAGS) -I$(SRC_DIR) -o $(BUILD_DIR)/test_runner $^ $(LIB_TARGET)
+	$(CC) $(CFLAGS) -I. -o $(BUILD_DIR)/test_runner $(TEST_OBJS) $(LIB_TARGET)
 	@echo "Running tests..."
 	@$(BUILD_DIR)/test_runner
-
-
 
 # Clean build artifacts
 clean:
 	rm -rf $(BUILD_DIR)
 
+# Phony target for documentation
+.PHONY: docs clean_docs
 
+# Clean documentation artifacts
+clean_docs:
+	rm -rf html latex
+
+# Generate documentation
+docs: clean_docs
+	doxygen Doxyfile
