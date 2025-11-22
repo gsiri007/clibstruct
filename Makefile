@@ -21,7 +21,7 @@ LIB_OBJS = $(BUILD_DIR)/singlylinkedlist.o
 LIB_TARGET = $(BUILD_DIR)/libsinglylinkedlist.a
 
 # Test files
-TEST_SRCS = $(TEST_DIR)/test_runner.c $(TEST_DIR)/test_creation.c $(TEST_DIR)/test_deletion.c $(TEST_DIR)/test_insertion.c
+TEST_SRCS = $(TEST_DIR)/test_runner.c $(TEST_DIR)/test_creation.c $(TEST_DIR)/test_deletion.c $(TEST_DIR)/test_insertion.c $(TEST_DIR)/test_data_types.c
 TEST_OBJS = $(patsubst $(TEST_DIR)/%.c, $(BUILD_DIR)/%.o, $(TEST_SRCS))
 
 # Phony targets

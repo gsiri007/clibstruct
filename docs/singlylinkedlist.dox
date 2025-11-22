@@ -1,4 +1,11 @@
 /**
  * @defgroup SinglyLinkedList Singly Linked List
- * @brief A library for creating and manipulating singly linked lists.
+ * @brief A library for creating and manipulating singly linked lists with generic data.
+ *
+ * This module provides a set of functions to create, manipulate, and destroy a
+ * singly linked list. The list is generic and can store data of any type using
+ * `void*` pointers.
+ *
+ * @note The user of this library is responsible for the memory management of the
+ * data stored in the list.
  */

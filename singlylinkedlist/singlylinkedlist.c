@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-node_t *createLinkedList(int data) {
+node_t *createLinkedList(void *data) {
     node_t *headPtr = (node_t *) malloc(sizeof(node_t));
     if (headPtr == NULL) {
         return NULL;
@@ -13,7 +13,7 @@ node_t *createLinkedList(int data) {
     return headPtr;
 }
 
-int addEndNode(int data, node_t **headPtr) {
+int addEndNode(void *data, node_t **headPtr) {
     node_t *newNode = (node_t *) malloc(sizeof(node_t));
 
     if (newNode == NULL) {
@@ -37,7 +37,7 @@ int addEndNode(int data, node_t **headPtr) {
     return 0;
 }
 
-int addBeginNode(int data, node_t **headPtr) {
+int addBeginNode(void *data, node_t **headPtr) {
     node_t *newNode = (node_t *) malloc(sizeof(node_t));
     if (newNode == NULL) {
         return -1;
@@ -51,7 +51,7 @@ int addBeginNode(int data, node_t **headPtr) {
     return 0;
 }
 
-int insertNode(int pos, int data, node_t **headPtr) {
+int insertNode(int pos, void *data, node_t **headPtr) {
     // lower bound check
     if (pos < 0) {
         return -1;
@@ -95,17 +95,18 @@ int insertNode(int pos, int data, node_t **headPtr) {
     return 0;
 }
 
-int deleteEndNode(node_t **headPtr) {
+void *deleteEndNode(node_t **headPtr) {
     // empty check
     if (*headPtr == NULL) {
-        return -1;
+        return NULL;
     }
 
     // single node case
     if ((*headPtr)->next == NULL) {
+        void *data = (*headPtr)->data;
         free(*headPtr);
         *headPtr = NULL;
-        return 0;
+        return data;
     }
 
     node_t *ptr = *headPtr;
@@ -117,38 +118,40 @@ int deleteEndNode(node_t **headPtr) {
     }
 
     prevNode->next = NULL;
+    void *data = ptr->data;
     free(ptr);
-    return 0;
+    return data;
 }
 
-int deleteBeginNode(node_t **headPtr) {
+void *deleteBeginNode(node_t **headPtr) {
     // empty check
     if (*headPtr == NULL) {
-        return -1;
+        return NULL;
     }
 
-    node_t *temp = *headPtr;
+    node_t *tmp = *headPtr;
     *headPtr = (*headPtr)->next;
-    free(temp);
-    return 0;
+    void *data = tmp->data;
+    free(tmp);
+    return data;
 }
 
-int deleteNode(int pos, node_t **headPtr) {
+void *deleteNode(int pos, node_t **headPtr) {
     // empty check
     if (*headPtr == NULL) {
-        return -1;
+        return NULL;
     }
 
     // lower bound check
     if (pos < 0) {
-        return -1;
+        return NULL;
     }
 
     int size = sizeLinkedList(*headPtr);
 
     // upper bound check
     if (pos >= size) {
-        return -1;
+        return NULL;
     }
 
     if (pos == 0) {
@@ -167,28 +170,10 @@ int deleteNode(int pos, node_t **headPtr) {
     node_t *tmp = ptr;
     ptr = ptr->next;
     prevPtr->next = ptr;
+    void *data = tmp->data;
     free(tmp);
 
-    return 0;
-}
-
-int deleteLinkedList(node_t **headPtr) {
-    // empty check
-    if (*headPtr == NULL) {
-        return 0;
-    }
-
-    node_t *ptr = *headPtr;
-    while (ptr->next != NULL) {
-        node_t *tmp = ptr;
-        ptr = ptr->next;
-        free(tmp);
-    }
-
-    free(ptr);
-    *headPtr = NULL;
-    return 0;
-
+    return data;
 }
 
 int reverseLinkedList(node_t **headPtr) {
@@ -237,14 +222,13 @@ int bytesLinkedList(node_t *headPtr) {
     return numNodes * bytesPerNode; 
 }
 
-
 void printNode(node_t *node) {
     // empty check
     if (node == NULL) {
         return;
     }
 
-    printf("data = %d | next = %p\n", node->data, node->next);
+    printf("data = %p | next = %p\n", node->data, node->next);
 }
 
 void printLinkedList(node_t *headPtr) {

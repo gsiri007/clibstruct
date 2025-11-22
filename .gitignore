@@ -1,6 +1,6 @@
 **/*.md
-**/test
-**/test.c
+**/try
+**/a.out
 build/
 html/
 latex/
