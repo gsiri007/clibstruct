@@ -58,14 +58,14 @@ void test_addEndNode_basic() {
     assert(head->next == NULL);
 
     int result = addEndNode(int_ptr(20), &head); // Corrected call
-    assert(result == 0);
+    assert(result == 1);
     assert(head->next != NULL);
     assert(*(int*)head->next->data == 20);
     assert(head->next->next == NULL);
 
     // Add another node to ensure it still works
     result = addEndNode(int_ptr(30), &head);
-    assert(result == 0);
+    assert(result == 1);
     assert(head->next->next != NULL);
     assert(*(int*)head->next->next->data == 30);
     assert(head->next->next->next == NULL);
@@ -85,7 +85,7 @@ void test_addEndNode_handles_null_head() {
     node_t *head = NULL;
     
     int result = addEndNode(int_ptr(100), &head); // Add to an empty list
-    assert(result == 0);
+    assert(result == 1);
     assert(head != NULL);
     assert(*(int*)head->data == 100);
     assert(head->next == NULL);
@@ -93,7 +93,7 @@ void test_addEndNode_handles_null_head() {
 
     // Add a second node to ensure it still behaves correctly after the first
     result = addEndNode(int_ptr(200), &head);
-    assert(result == 0);
+    assert(result == 1);
     assert(head->next != NULL);
     assert(*(int*)head->next->data == 200);
     assert(head->next->next == NULL);

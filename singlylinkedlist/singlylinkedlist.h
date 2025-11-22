@@ -33,7 +33,7 @@ node_t *createLinkedList(void *data);
  * @brief Adds a new node to the end of the linked list.
  * @param data The data for the new node.
  * @param headPtr A pointer to the head of the linked list.
- * @return 0 on success, -1 on failure.
+ * @return 1 on success, 0 on failure.
  * @ingroup SinglyLinkedList
  */
 int addEndNode(void *data, node_t **headPtr);
@@ -42,7 +42,7 @@ int addEndNode(void *data, node_t **headPtr);
  * @brief Adds a new node to the beginning of the linked list.
  * @param data The data for the new node.
  * @param headPtr A pointer to the head of the linked list.
- * @return 0 on success, -1 on failure.
+ * @return 1 on success, 0 on failure.
  * @ingroup SinglyLinkedList
  */
 int addBeginNode(void *data, node_t **headPtr);
@@ -52,7 +52,7 @@ int addBeginNode(void *data, node_t **headPtr);
  * @param pos The position to insert the new node at.
  * @param data The data for the new node.
  * @param headPtr A pointer to the head of the linked list.
- * @return 0 on success, -1 on failure.
+ * @return 1 on success, 0 on failure.
  * @ingroup SinglyLinkedList
  */
 int insertNode(int pos, void *data, node_t **headPtr);
@@ -86,12 +86,11 @@ void *deleteBeginNode(node_t **headPtr);
 void *deleteNode(int pos, node_t **headPtr);
 
 /**
- * @brief Deletes the entire linked list.
+ * @brief Reverses the order of the linked list.
  * @param headPtr A pointer to the head of the linked list.
- * @return 0 on success, -1 on failure.
+ * @return 1 on success, 0 on failure.
  * @ingroup SinglyLinkedList
  */
-
 int reverseLinkedList(node_t **headPtr);
 
 /**

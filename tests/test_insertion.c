@@ -114,7 +114,7 @@ void test_insertNodeAtPosition_out_of_bounds() {
 
     int* data_to_insert = int_ptr(20);
     int result = insertNode(5, data_to_insert, &head); // Insert beyond the current end
-    assert(result == -1); // Should fail
+    assert(result == 0); // Should fail
     assert(head->next == NULL); // List should be unchanged
     free(data_to_insert); // Manually free data since insertion failed
     printf("  Attempted to insert at position 5. List remains 10->NULL - PASSED\n");

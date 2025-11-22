@@ -3,6 +3,8 @@
 #include <stdlib.h>
 
 node_t *createLinkedList(void *data) {
+    //TODO: this should not require data
+    //it should only return a pointer to the headNode and create an empty list
     node_t *headPtr = (node_t *) malloc(sizeof(node_t));
     if (headPtr == NULL) {
         return NULL;
@@ -17,7 +19,7 @@ int addEndNode(void *data, node_t **headPtr) {
     node_t *newNode = (node_t *) malloc(sizeof(node_t));
 
     if (newNode == NULL) {
-        return -1;
+        return 0;
     }
 
     newNode->data = data;
@@ -25,7 +27,7 @@ int addEndNode(void *data, node_t **headPtr) {
 
     if (*headPtr == NULL) {
         *headPtr = newNode;
-        return 0;
+        return 1;
     }
 
     node_t *ptr = *headPtr;
@@ -34,13 +36,13 @@ int addEndNode(void *data, node_t **headPtr) {
     }
 
     ptr->next = newNode;
-    return 0;
+    return 1;
 }
 
 int addBeginNode(void *data, node_t **headPtr) {
     node_t *newNode = (node_t *) malloc(sizeof(node_t));
     if (newNode == NULL) {
-        return -1;
+        return 0;
     }
 
     newNode->data = data;
@@ -48,13 +50,13 @@ int addBeginNode(void *data, node_t **headPtr) {
 
     *headPtr = newNode;
 
-    return 0;
+    return 1;
 }
 
 int insertNode(int pos, void *data, node_t **headPtr) {
     // lower bound check
     if (pos < 0) {
-        return -1;
+        return 0;
     }
 
     // insert at begining and to an empty list
@@ -64,14 +66,14 @@ int insertNode(int pos, void *data, node_t **headPtr) {
 
     // for an empty list can't insert to a pos > 0
     if (pos > 0 && *headPtr == NULL) {
-        return -1;
+        return 0;
     }
 
     int size = sizeLinkedList(*headPtr);
 
     // upper bound check
     if (pos > size) {
-        return -1;
+        return 0;
     }
 
     // insert at given position
@@ -86,13 +88,13 @@ int insertNode(int pos, void *data, node_t **headPtr) {
 
     node_t *newNode = (node_t *) malloc(sizeof(node_t));
     if (newNode == NULL) {
-        return -1;
+        return 0;
     }
 
     prevNode->next = newNode;
     newNode->next  = ptr;
     newNode->data  = data;
-    return 0;
+    return 1;
 }
 
 void *deleteEndNode(node_t **headPtr) {
@@ -179,7 +181,7 @@ void *deleteNode(int pos, node_t **headPtr) {
 int reverseLinkedList(node_t **headPtr) {
     // empty check
     if (*headPtr == NULL) {
-        return -1;
+        return 0;
     }
 
     node_t *ptr = *headPtr;
@@ -195,7 +197,7 @@ int reverseLinkedList(node_t **headPtr) {
 
     ptr->next = prevNode;
     *headPtr = ptr;
-    return 0;
+    return 1;
 
 }
 
