@@ -6,5 +6,5 @@
  * It supports standard stack operations like push, pop, and peek.
  *
  * @note The user of this library is responsible for understanding the memory management implications
- * when using `freeStack()` versus `destroyStack()`.
+ * when using `free_stack()` versus `destroy_stack()`.
  */

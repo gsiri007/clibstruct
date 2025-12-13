@@ -1,21 +1,22 @@
-#include "singlylinkedlist.h"
-#include <stdio.h>
 #include <stdlib.h>
+#include <stdio.h>
+#include "doublylinkedlist.h"
 
-sll_node_t *sll_create_linked_list(void *data) {
-    sll_node_t *headPtr = (sll_node_t *) malloc(sizeof(sll_node_t));
+dll_node_t *dll_create_linked_list(void *data) {
+    dll_node_t *headPtr = (dll_node_t *) malloc(sizeof(dll_node_t));
     if (headPtr == NULL) {
         return NULL;
     }
 
+    headPtr->prev = NULL;
     headPtr->data = data;
     headPtr->next = NULL;
+
     return headPtr;
 }
 
-int sll_add_end_node(void *data, sll_node_t **headPtr) {
-    sll_node_t *newNode = (sll_node_t *) malloc(sizeof(sll_node_t));
-
+int dll_add_end_node(void *data, dll_node_t **headPtr) {
+    dll_node_t *newNode = (dll_node_t *) malloc(sizeof(dll_node_t));
     if (newNode == NULL) {
         return 0;
     }
@@ -24,34 +25,43 @@ int sll_add_end_node(void *data, sll_node_t **headPtr) {
     newNode->next = NULL;
 
     if (*headPtr == NULL) {
+        newNode->prev = NULL;
         *headPtr = newNode;
         return 1;
     }
 
-    sll_node_t *ptr = *headPtr;
-    while (ptr->next != NULL) {
+    dll_node_t *ptr = *headPtr;
+    while(ptr->next != NULL) {
         ptr = ptr->next;
     }
 
     ptr->next = newNode;
+    newNode->prev = ptr;
     return 1;
 }
 
-int sll_add_begin_node(void *data, sll_node_t **headPtr) {
-    sll_node_t *newNode = (sll_node_t *) malloc(sizeof(sll_node_t));
+int dll_add_begin_node(void *data, dll_node_t **headPtr) {
+    dll_node_t *newNode = (dll_node_t *) malloc(sizeof(dll_node_t));
     if (newNode == NULL) {
         return 0;
     }
 
+    newNode->prev = NULL;
     newNode->data = data;
+
+    if (*headPtr == NULL) {
+        newNode->next = NULL;
+        *headPtr = newNode;
+        return 1;
+    }
+
     newNode->next = *headPtr;
-
+    (*headPtr)->prev = newNode;
     *headPtr = newNode;
-
     return 1;
 }
 
-int sll_insert_node(int pos, void *data, sll_node_t **headPtr) {
+int dll_insert_node(int pos, void *data, dll_node_t **headPtr) {
     // lower bound check
     if (pos < 0) {
         return 0;
@@ -59,7 +69,7 @@ int sll_insert_node(int pos, void *data, sll_node_t **headPtr) {
 
     // insert at begining and to an empty list
     if (pos == 0) { 
-        return sll_add_begin_node(data, headPtr);
+        return dll_add_begin_node(data, headPtr);
     }
 
     // for an empty list can't insert to a pos > 0
@@ -67,7 +77,7 @@ int sll_insert_node(int pos, void *data, sll_node_t **headPtr) {
         return 0;
     }
 
-    int size = sll_size_linked_list(*headPtr);
+    int size = dll_size_linked_list(*headPtr);
 
     // upper bound check
     if (pos > size) {
@@ -76,27 +86,30 @@ int sll_insert_node(int pos, void *data, sll_node_t **headPtr) {
 
     // insert at given position
     int count = 0;
-    sll_node_t *ptr = *headPtr;
-    sll_node_t *prevNode = NULL;
-    //TODO: convert while loop -> for loop
+    dll_node_t *ptr = *headPtr;
+    dll_node_t *prevNode = NULL;
     while (count != pos) {
         prevNode = ptr;
         ptr = ptr->next;
         count++;
     }
 
-    sll_node_t *newNode = (sll_node_t *) malloc(sizeof(sll_node_t));
+    dll_node_t *newNode = (dll_node_t *) malloc(sizeof(dll_node_t));
     if (newNode == NULL) {
         return 0;
     }
 
     prevNode->next = newNode;
-    newNode->next  = ptr;
+    newNode->prev  = prevNode;
     newNode->data  = data;
+    newNode->next  = ptr;
+    ptr->prev      = newNode;
+
     return 1;
+
 }
 
-void *sll_delete_end_node(sll_node_t **headPtr) {
+void *dll_delete_end_node(dll_node_t **headPtr) {
     // empty check
     if (*headPtr == NULL) {
         return NULL;
@@ -110,8 +123,8 @@ void *sll_delete_end_node(sll_node_t **headPtr) {
         return data;
     }
 
-    sll_node_t *ptr = *headPtr;
-    sll_node_t *prevNode = ptr;
+    dll_node_t *ptr = *headPtr;
+    dll_node_t *prevNode = ptr;
 
     while (ptr->next != NULL) {
         prevNode = ptr;
@@ -121,23 +134,26 @@ void *sll_delete_end_node(sll_node_t **headPtr) {
     prevNode->next = NULL;
     void *data = ptr->data;
     free(ptr);
+
     return data;
 }
 
-void *sll_delete_begin_node(sll_node_t **headPtr) {
+void *dll_delete_begin_node(dll_node_t **headPtr) {
     // empty check
     if (*headPtr == NULL) {
         return NULL;
     }
 
-    sll_node_t *tmp = *headPtr;
+    dll_node_t *tmp = *headPtr;
     *headPtr = (*headPtr)->next;
+    (*headPtr)->prev = NULL;
     void *data = tmp->data;
     free(tmp);
+
     return data;
 }
 
-void *sll_delete_node(int pos, sll_node_t **headPtr) {
+void *dll_delete_node(int pos, dll_node_t **headPtr) {
     // empty check
     if (*headPtr == NULL) {
         return NULL;
@@ -148,7 +164,7 @@ void *sll_delete_node(int pos, sll_node_t **headPtr) {
         return NULL;
     }
 
-    int size = sll_size_linked_list(*headPtr);
+    int size = dll_size_linked_list(*headPtr);
 
     // upper bound check
     if (pos >= size) {
@@ -156,58 +172,60 @@ void *sll_delete_node(int pos, sll_node_t **headPtr) {
     }
 
     if (pos == 0) {
-        return sll_delete_begin_node(headPtr);
+        return dll_delete_begin_node(headPtr);
     }
 
     int count = 0;
-    sll_node_t *ptr = *headPtr;
-    sll_node_t *prevPtr = ptr;
+    dll_node_t *ptr = *headPtr;
+    dll_node_t *prevPtr = ptr;
     while (count != pos) {
         count++;
         prevPtr = ptr;
         ptr = ptr->next;
     }
 
-    sll_node_t *tmp = ptr;
+    dll_node_t *tmp = ptr;
     ptr = ptr->next;
     prevPtr->next = ptr;
+    ptr->prev = prevPtr;
     void *data = tmp->data;
     free(tmp);
 
     return data;
 }
 
-int sll_reverse_linked_list(sll_node_t **headPtr) {
+int dll_reverse_linked_list(dll_node_t **headPtr) {
     // empty check
     if (*headPtr == NULL) {
         return 0;
     }
 
-    sll_node_t *ptr = *headPtr;
-    sll_node_t *prevNode = NULL;
-    sll_node_t *nextNode = ptr->next;
+    dll_node_t *ptr = *headPtr;
+    dll_node_t *prevNode = NULL;
+    dll_node_t *nextNode = ptr->next;
 
     while (nextNode != NULL) {
+        ptr->prev = ptr->next;
         ptr->next = prevNode;
         prevNode = ptr;
         ptr = nextNode;
         nextNode = ptr->next;
     }
 
+    ptr->prev = ptr->next;
     ptr->next = prevNode;
     *headPtr = ptr;
     return 1;
-
 }
 
-int sll_size_linked_list(sll_node_t *headPtr) {
+int dll_size_linked_list(dll_node_t *headPtr) {
     // empty check
     if (headPtr == NULL) {
         return 0;
     }
 
     int count = 0;
-    sll_node_t *ptr = headPtr;
+    dll_node_t *ptr = headPtr;
 
     while (ptr != NULL) {
         count++;
@@ -217,32 +235,32 @@ int sll_size_linked_list(sll_node_t *headPtr) {
     return count;
 }
 
-int sll_bytes_linked_list(sll_node_t *headPtr) { 
-    int numNodes = sll_size_linked_list(headPtr);
-    int bytesPerNode =  sizeof(sll_node_t);
+int dll_bytes_linked_list(dll_node_t *headPtr) { 
+    int numNodes = dll_size_linked_list(headPtr);
+    int bytesPerNode =  sizeof(dll_node_t);
     return numNodes * bytesPerNode; 
 }
 
-void sll_print_node(sll_node_t *node) {
+void dll_print_node(dll_node_t *node) {
     // empty check
     if (node == NULL) {
         return;
     }
 
-    printf("data = %p | next = %p\n", node->data, node->next);
+    printf("prev = %p | data = %p | next = %p\n", (void*)node->prev, node->data, (void*)node->next);
 }
 
-void sll_print_linked_list(sll_node_t *headPtr) {
+void dll_print_linked_list(dll_node_t *headPtr) {
     // empty check
     if (headPtr == NULL) {
         puts("<empty>");
         return;
     }
 
-    sll_node_t *ptr = headPtr;
+    dll_node_t *ptr = headPtr;
 
     while (ptr != NULL) {
-        sll_print_node(ptr);
+        dll_print_node(ptr);
         ptr = ptr->next;
     }
 }

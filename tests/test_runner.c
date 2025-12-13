@@ -6,16 +6,18 @@ void run_deletion_tests();
 void run_insertion_tests();
 void run_data_types_tests();
 void run_stack_tests();
+void run_doublylinkedlist_tests();
 
 int main() {
-    printf("--- Starting Comprehensive Test Suite ---\\n");
+    printf("--- Starting Comprehensive Test Suite ---\n");
 
     run_creation_tests();
     run_deletion_tests();
     run_insertion_tests();
     run_data_types_tests();
     run_stack_tests();
+    run_doublylinkedlist_tests();
 
-    printf("\\n--- All Tests Completed ---\\n");
+    printf("\n--- All Tests Completed ---\n");
     return 0;
 }

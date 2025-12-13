@@ -1,7 +1,14 @@
 #include <stdlib.h>
 #include "stack.h"
+#include "../singlylinkedlist/singlylinkedlist.h"
 
-stack_t *createStack() {
+// The full definition of the stack is private to the implementation file.
+// TODO: review this
+struct Stack {
+    sll_node_t *top;
+};
+
+stack_t *create_stack() {
     stack_t *stack = (stack_t *) malloc(sizeof(stack_t));
     if (stack == NULL) {
         return NULL;
@@ -10,41 +17,41 @@ stack_t *createStack() {
     return stack;
 }
 
-int pushStack(void *data, stack_t *stack) {
+int push_stack(void *data, stack_t *stack) {
     if (stack == NULL) {
         return 0;
     }
-    return addBeginNode(data, &(stack->top));
+    return sll_add_begin_node(data, &(stack->top));
 }
 
-void *popStack(stack_t *stack) {
+void *pop_stack(stack_t *stack) {
     if (stack == NULL) {
         return NULL;
     }
-    return deleteBeginNode(&(stack->top));
+    return sll_delete_begin_node(&(stack->top));
 }
 
-void *peekStack(stack_t *stack) {
+void *peek_stack(stack_t *stack) {
     if (stack == NULL || stack->top == NULL) {
         return NULL;
     }
     return stack->top->data;
 }
 
-int isEmptyStack(stack_t *stack) {
+int is_empty_stack(stack_t *stack) {
     if (stack == NULL || stack->top == NULL) {
         return 1;
     }
     return 0;
 }
 
-int freeStack(stack_t **stack) {
+int free_stack(stack_t **stack) {
     if (*stack == NULL || stack == NULL) {
         return 0;
     }
 
     while ((*stack)->top != NULL) {
-        popStack(*stack);
+        pop_stack(*stack);
     }
 
     free(*stack);
@@ -53,13 +60,13 @@ int freeStack(stack_t **stack) {
 
 }
 
-int destroyStack(stack_t **stack) {
+int destroy_stack(stack_t **stack) {
     if (*stack == NULL || stack == NULL) {
         return 0;
     }
 
     while ((*stack)->top != NULL) {
-        void *data = popStack(*stack);
+        void *data = pop_stack(*stack);
         free(data);
     }
 
