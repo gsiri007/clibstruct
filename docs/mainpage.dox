@@ -8,6 +8,5 @@ This library provides a collection of common data structures implemented in C.
 \section data_structures Data Structures
 - \ref SinglyLinkedList
 - \ref DoublyLinkedList
-- \ref Stack
 
 */
