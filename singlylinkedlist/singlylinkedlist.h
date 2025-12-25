@@ -15,99 +15,101 @@
  * @brief A node in a singly linked list.
  * @ingroup SinglyLinkedList
  */
-typedef struct SllNode {
-    void *data; /**< The data for the node. */
-    struct SllNode *next; /**< A pointer to the next node in the list. */
-} sll_node_t;
-
+typedef struct SllNode sll_node_t;
 
 /**
- * @brief Creates a new linked list.
- * @param data The data for the first node.
- * @return A pointer to the head of the new linked list, or NULL on failure.
+ * @brief A singly linked list structure.
  * @ingroup SinglyLinkedList
  */
-sll_node_t *sll_create_linked_list(void *data);
+typedef struct Sll sll_t;
 
 /**
- * @brief Adds a new node to the end of the linked list.
- * @param data The data for the new node.
- * @param headPtr A pointer to the head of the linked list.
- * @return 1 on success, 0 on failure.
+ * @brief Creates a new, empty linked list.
+ * @return A pointer to the new linked list structure, or NULL on failure.
  * @ingroup SinglyLinkedList
  */
-int sll_add_end_node(void *data, sll_node_t **headPtr);
+sll_t *sll_create_linked_list();
 
 /**
  * @brief Adds a new node to the beginning of the linked list.
+ * @param sll A pointer to the linked list.
  * @param data The data for the new node.
- * @param headPtr A pointer to the head of the linked list.
- * @return 1 on success, 0 on failure.
+ * @return 0 on success, 1 on failure.
  * @ingroup SinglyLinkedList
  */
-int sll_add_begin_node(void *data, sll_node_t **headPtr);
+int sll_add_head_node(sll_t *sll, void *data);
+
+/**
+ * @brief Adds a new node to the end of the linked list.
+ * @param sll A pointer to the linked list.
+ * @param data The data for the new node.
+ * @return 0 on success, 1 on failure.
+ * @ingroup SinglyLinkedList
+ */
+int sll_add_tail_node(sll_t *sll, void *data);
+
 
 /**
  * @brief Inserts a new node at a specific position in the linked list.
+ * @param sll A pointer to the linked list.
  * @param pos The position to insert the new node at.
  * @param data The data for the new node.
- * @param headPtr A pointer to the head of the linked list.
- * @return 1 on success, 0 on failure.
+ * @return 0 on success, 1 on failure.
  * @ingroup SinglyLinkedList
  */
-int sll_insert_node(int pos, void *data, sll_node_t **headPtr);
-
-/**
- * @brief Deletes the last node of the linked list.
- * @param headPtr A pointer to the head of the linked list.
- * @return A pointer to the data of the deleted node, or NULL on failure.
- * @note The caller is responsible for freeing the memory of the returned data.
- * @ingroup SinglyLinkedList
- */
-void *sll_delete_end_node(sll_node_t **headPtr);
+int sll_insert_node(sll_t *sll, int pos, void *data);
 
 /**
  * @brief Deletes the first node of the linked list.
- * @param headPtr A pointer to the head of the linked list.
+ * @param sll A pointer to the linked list.
  * @return A pointer to the data of the deleted node, or NULL on failure.
  * @note The caller is responsible for freeing the memory of the returned data.
  * @ingroup SinglyLinkedList
  */
-void *sll_delete_begin_node(sll_node_t **headPtr);
+void *sll_delete_head_node(sll_t *sll);
+
+/**
+ * @brief Deletes the last node of the linked list.
+ * @param sll A pointer to the linked list.
+ * @return A pointer to the data of the deleted node, or NULL on failure.
+ * @note The caller is responsible for freeing the memory of the returned data.
+ * @ingroup SinglyLinkedList
+ */
+void *sll_delete_tail_node(sll_t *sll);
 
 /**
  * @brief Deletes a node at a specific position in the linked list.
+ * @param sll A pointer to the linked list.
  * @param pos The 0-based position of the node to delete.
- * @param headPtr A pointer to the head of the linked list.
  * @return A pointer to the data of the deleted node, or NULL on failure.
  * @note The caller is responsible for freeing the memory of the returned data.
  * @ingroup SinglyLinkedList
  */
-void *sll_delete_node(int pos, sll_node_t **headPtr);
+void *sll_delete_node( sll_t *sll, int pos);
 
 /**
  * @brief Reverses the order of the linked list.
- * @param headPtr A pointer to the head of the linked list.
- * @return 1 on success, 0 on failure.
+ * @param sll A pointer to the linked list.
+ * @return 0 on success, 1 on failure.
  * @ingroup SinglyLinkedList
  */
-int sll_reverse_linked_list(sll_node_t **headPtr);
+int sll_reverse_linked_list(sll_t *sll);
 
 /**
  * @brief Gets the size of the linked list.
- * @param headPtr A pointer to the head of the linked list.
+ * @param sll A pointer to the linked list.
  * @return The number of nodes in the linked list.
  * @ingroup SinglyLinkedList
  */
-int sll_size_linked_list(sll_node_t *headPtr);
+int sll_get_length(sll_t *sll);
 
 /**
- * @brief Gets the number of bytes occupied by the linked list.
- * @param headPtr A pointer to the head of the linked list.
- * @return The number of bytes occupied by the linked list.
+ * @brief Gets the head node of the linked list.
+ * @param sll A pointer to the linked list.
+ * @return A pointer to the head node of the linked list.
  * @ingroup SinglyLinkedList
  */
-int sll_bytes_linked_list(sll_node_t *headPtr);
+sll_node_t *sll_get_head(sll_t *sll);
 
 /**
  * @brief Prints a single node.
@@ -118,9 +120,9 @@ void sll_print_node(sll_node_t *node);
 
 /**
  * @brief Prints the entire linked list.
- * @param head A pointer to the head of the linked list.
+ * @param sll A pointer to the linked list.
  * @ingroup SinglyLinkedList
  */
-void sll_print_linked_list(sll_node_t *head);
+void sll_print_linked_list(sll_t *sll);
 
 #endif // SINGLYLINKEDLIST_H

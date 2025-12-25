@@ -94,5 +94,6 @@ int free_stack(stack_t **stack);
  */
 int destroy_stack(stack_t **stack);
 
+//TODO: function to find the size of the stack
 
 #endif //STACK_H
